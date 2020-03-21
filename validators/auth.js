@@ -9,10 +9,6 @@ exports.userSignupValidator = [
 		.not()
 		.isEmpty()
 		.withMessage('Last name is required'),
-	check('jobTitle')
-		.not()
-		.isEmpty()
-		.withMessage('Job title is required'),
 	check('email')
 		.isEmail()
 		.withMessage('Must be a valid email address'),

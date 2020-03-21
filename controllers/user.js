@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const Job = require('../models/job');
+const Blog = require('../models/blog');
 const _ = require('lodash');
 const formidable = require('formidable');
 const fs = require('fs');
@@ -13,7 +13,7 @@ exports.read = (req, res) => {
 exports.publicProfile = (req, res) => {
 	let username = req.params.username;
 	let user;
-	let jobs;
+	let blogs;
 
 	User.findOne({ username }).exec((err, userFromDB) => {
 		if (err || !userFromDB) {
@@ -23,10 +23,10 @@ exports.publicProfile = (req, res) => {
 		}
 		user = userFromDB;
 		let userId = user._id;
-		Job.find({ postedBy: userId })
+		Blog.find({ postedBy: userId })
 			.populate('categories', '_id name slug')
 			.populate('tags', '_id name slug')
-			.populate('postedBy', '_id jobTitle firstName')
+			.populate('postedBy', '_id blogTitle firstName')
 			.limit(10)
 			.select(
 				'_id title slug excerpt categories tags postedBy createdAt updatedAt'
@@ -41,7 +41,7 @@ exports.publicProfile = (req, res) => {
 				user.hashed_password = undefined;
 				res.json({
 					user,
-					jobs: data
+					blogs: data
 				});
 			});
 	});
@@ -54,7 +54,7 @@ exports.listUsers = (req, res) => {
 
 	User.find({})
 		.select(
-			'_id username firstName lastName cellPhone emergencyName emergencyPhone jobTitle email'
+			'_id username firstName lastName cellPhone emergencyName emergencyPhone blogTitle email'
 		)
 		.exec((err, data) => {
 			if (err) {
@@ -64,7 +64,7 @@ exports.listUsers = (req, res) => {
 			}
 			users = data; // users
 
-			// return all jobs categories tags
+			// return all blogs categories tags
 			res.json({ users, size: users.length });
 		});
 };

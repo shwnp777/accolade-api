@@ -1,5 +1,5 @@
 const Tag = require('../models/tag');
-const Job = require('../models/job');
+const Blog = require('../models/blog');
 const slugify = require('slugify');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 
@@ -41,10 +41,10 @@ exports.read = (req, res) => {
 			});
 		}
 		// res.json(tag);
-		Job.find({ tags: tag })
+		Blog.find({ tags: tag })
 			.populate('categories', '_id name slug')
 			.populate('tags', '_id name slug')
-			.populate('postedBy', '_id jobTitle')
+			.populate('postedBy', '_id blogTitle')
 			.select(
 				'_id title slug excerpt categories postedBy tags createdAt updatedAt'
 			)
@@ -54,7 +54,7 @@ exports.read = (req, res) => {
 						error: errorHandler(err)
 					});
 				}
-				res.json({ tag: tag, jobs: data });
+				res.json({ tag: tag, blogs: data });
 			});
 	});
 };

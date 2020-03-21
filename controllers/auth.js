@@ -12,14 +12,14 @@ exports.signup = (req, res) => {
 			});
 		}
 
-		const { firstName, lastName, jobTitle, email, password } = req.body;
+		const { firstName, lastName, blogTitle, email, password } = req.body;
 		let username = shortId.generate();
 		let profile = `${process.env.CLIENT_URL}/profile/${username}`;
 
 		let newUser = new User({
 			firstName,
 			lastName,
-			jobTitle,
+			blogTitle,
 			email,
 			password,
 			profile,
@@ -62,7 +62,7 @@ exports.signin = (req, res) => {
 		});
 
 		res.cookie('token', token, { expiresIn: '1d' });
-		const { _id, username, firstName, lastName, jobTitle, email, role } = user;
+		const { _id, username, firstName, lastName, blogTitle, email, role } = user;
 		return res.json({
 			token,
 			user: {
@@ -70,7 +70,7 @@ exports.signin = (req, res) => {
 				username,
 				firstName,
 				lastName,
-				jobTitle,
+				blogTitle,
 				email,
 				role
 			}
